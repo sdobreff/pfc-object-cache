@@ -1,0 +1,261 @@
+/* =============================================================
+   PFC Object Cache — Admin Stylesheet
+   Static classes only; no dynamic or generated class names.
+   ============================================================= */
+
+/* ── Layout ─────────────────────────────────────────────────── */
+.pfc-admin-wrap {
+	max-width: 1100px;
+}
+
+/* ── Page header ─────────────────────────────────────────────── */
+.pfc-page-header {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	padding: 20px 0 16px;
+	border-bottom: 1px solid #e0e0e0;
+	margin-bottom: 24px;
+}
+
+.pfc-page-header__left {
+	display: flex;
+	align-items: center;
+	gap: 14px;
+}
+
+.pfc-header-icon {
+	font-size: 36px !important;
+	color: #2271b1;
+}
+
+.pfc-page-title {
+	font-size: 22px !important;
+	font-weight: 700 !important;
+	margin: 0 0 4px !important;
+}
+
+.pfc-page-subtitle {
+	color: #666;
+	font-size: 13px;
+	margin: 0;
+}
+
+.pfc-version-badge {
+	background: #2271b1;
+	color: #fff;
+	padding: 3px 10px;
+	border-radius: 20px;
+	font-size: 12px;
+	font-weight: 600;
+}
+
+/* ── Driver badge ────────────────────────────────────────────── */
+.pfc-driver-badge {
+	display: inline-block;
+	padding: 1px 8px;
+	border-radius: 3px;
+	font-size: 12px;
+	font-weight: 700;
+	text-transform: uppercase;
+	letter-spacing: .04em;
+	vertical-align: middle;
+}
+
+.pfc-driver-badge--redis     { background: #fdecea; color: #c0392b; border: 1px solid #c0392b44; }
+.pfc-driver-badge--files     { background: #e8f4fd; color: #2271b1; border: 1px solid #2271b144; }
+.pfc-driver-badge--memcached { background: #fef3e6; color: #d35400; border: 1px solid #d3540044; }
+.pfc-driver-badge--apcu      { background: #eafaf1; color: #27ae60; border: 1px solid #27ae6044; }
+.pfc-driver-badge--sqlite3   { background: #f5effe; color: #8e44ad; border: 1px solid #8e44ad44; }
+
+/* ── Stats grid ──────────────────────────────────────────────── */
+.pfc-stats-grid {
+	display: grid;
+	grid-template-columns: repeat( auto-fill, minmax( 200px, 1fr ) );
+	gap: 16px;
+	margin-bottom: 28px;
+}
+
+.pfc-stat-card {
+	background: #fff;
+	border: 1px solid #e0e0e0;
+	border-radius: 8px;
+	padding: 20px 24px;
+	text-align: center;
+	box-shadow: 0 1px 3px rgba(0,0,0,.06);
+	transition: box-shadow .15s;
+}
+
+.pfc-stat-card:hover {
+	box-shadow: 0 4px 12px rgba(0,0,0,.1);
+}
+
+.pfc-stat-card__value {
+	font-size: 32px;
+	font-weight: 800;
+	line-height: 1;
+	margin-bottom: 6px;
+}
+
+.pfc-stat-card__value--cyan   { color: #0095b3; }
+.pfc-stat-card__value--green  { color: #27ae60; }
+.pfc-stat-card__value--orange { color: #d35400; }
+.pfc-stat-card__value--purple { color: #8e44ad; }
+
+.pfc-stat-card__label {
+	font-size: 11px;
+	font-weight: 600;
+	text-transform: uppercase;
+	letter-spacing: .06em;
+	color: #999;
+}
+
+/* ── Two-column panels ───────────────────────────────────────── */
+.pfc-two-col {
+	display: grid;
+	grid-template-columns: 1fr 1fr;
+	gap: 20px;
+}
+
+@media ( max-width: 900px ) {
+	.pfc-two-col {
+		grid-template-columns: 1fr;
+	}
+}
+
+.pfc-panel {
+	background: #fff;
+	border: 1px solid #e0e0e0;
+	border-radius: 8px;
+	padding: 24px;
+	box-shadow: 0 1px 3px rgba(0,0,0,.06);
+}
+
+.pfc-panel__title {
+	font-size: 14px !important;
+	font-weight: 700 !important;
+	margin: 0 0 18px !important;
+	display: flex;
+	align-items: center;
+	gap: 8px;
+	color: #1d2327;
+}
+
+.pfc-panel__title .dashicons {
+	color: #2271b1;
+}
+
+/* ── Forms ───────────────────────────────────────────────────── */
+.pfc-divider {
+	border: none;
+	border-top: 1px solid #f0f0f0;
+	margin: 20px 0;
+}
+
+.pfc-form-group {
+	margin-bottom: 16px;
+}
+
+.pfc-form-row {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: flex-start;
+	gap: 10px;
+	margin-bottom: 8px;
+}
+
+.pfc-label {
+	display: block;
+	font-weight: 600;
+	font-size: 13px;
+	margin-bottom: 5px;
+	margin-top: 10px;
+	color: #1d2327;
+}
+
+.pfc-input {
+	border-radius: 4px !important;
+}
+
+.pfc-select {
+	border-radius: 4px;
+	border: 1px solid #8c8f94;
+	padding: 4px 8px;
+	min-width: 180px;
+}
+
+.pfc-form-description {
+	color: #777;
+	font-size: 12px;
+	margin: 6px 0 0;
+	font-style: italic;
+	width: 100%;
+}
+
+.pfc-fields-heading {
+	font-size: 13px !important;
+	font-weight: 600 !important;
+	color: #50575e;
+	margin: 12px 0 8px !important;
+	padding-top: 12px;
+	border-top: 1px dashed #e0e0e0;
+}
+
+.pfc-notice-text {
+	display: flex;
+	align-items: baseline;
+	gap: 6px;
+	font-size: 12px;
+	color: #666;
+	margin-top: 14px;
+	background: #f6f7f7;
+	border-left: 3px solid #2271b1;
+	padding: 8px 12px;
+	border-radius: 0 4px 4px 0;
+}
+
+/* ── Buttons ─────────────────────────────────────────────────── */
+.pfc-btn {
+	display: inline-flex !important;
+	align-items: center;
+	gap: 6px;
+}
+
+.pfc-btn--primary {
+	background: #2271b1 !important;
+	border-color: #2271b1 !important;
+	color: #fff !important;
+}
+
+.pfc-btn--primary:hover {
+	background: #135e96 !important;
+	border-color: #135e96 !important;
+}
+
+.pfc-btn--danger {
+	background: #d63638 !important;
+	border-color: #d63638 !important;
+	color: #fff !important;
+}
+
+.pfc-btn--danger:hover {
+	background: #b32d2e !important;
+	border-color: #b32d2e !important;
+}
+
+.pfc-btn--secondary {
+	background: #2271b1 !important;
+	border-color: #2271b1 !important;
+	color: #fff !important;
+}
+
+.pfc-btn--secondary:hover {
+	background: #135e96 !important;
+	border-color: #135e96 !important;
+}
+
+/* ── Notices ─────────────────────────────────────────────────── */
+.pfc-notice {
+	margin-top: 0;
+	margin-bottom: 16px;
+}
