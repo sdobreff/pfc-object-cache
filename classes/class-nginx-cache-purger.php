@@ -235,8 +235,9 @@ if ( ! class_exists( NginxCachePurger::class ) ) {
 		 * Send a PURGE request for a public URL via the configured purge server.
 		 *
 		 * Uses the nginx fastcgi_cache_purge /purge/ location prefix pattern:
-		 * a GET request to http://server/purge/original-path with the original
-		 * Host header, so the cache key matches the one used by nginx.
+		 * a GET request to server/purge/original-path with the original Host
+		 * header. The request scheme is taken from the public URL so the nginx
+		 * cache key ($scheme component) matches the cached entry.
 		 *
 		 * @param  string $public_url The original public URL to purge.
 		 * @return bool
@@ -251,12 +252,18 @@ if ( ! class_exists( NginxCachePurger::class ) ) {
 				return false;
 			}
 
-			$original_host = $parsed['host'];
-			$path          = $parsed['path'] ?? '/';
-			$query         = ! empty( $parsed['query'] ) ? '?' . $parsed['query'] : '';
+			$original_host   = $parsed['host'];
+			$original_scheme = $parsed['scheme'] ?? 'https';
+			$path            = $parsed['path'] ?? '/';
+			$query           = ! empty( $parsed['query'] ) ? '?' . $parsed['query'] : '';
 
-			// Build: server_url/purge/original-path (nginx fastcgi_cache_purge location pattern).
-			$purge_url = rtrim( self::$purge_server_url, '/' ) . '/purge/' . ltrim( $path, '/' ) . $query;
+			// Extract host + port from the configured server URL.
+			$server_parsed = wp_parse_url( self::$purge_server_url );
+			$server_host   = $server_parsed['host'] ?? '127.0.0.1';
+			$server_port   = isset( $server_parsed['port'] ) ? ':' . $server_parsed['port'] : '';
+
+			// Use the original URL scheme so $scheme in the nginx cache key matches.
+			$purge_url = $original_scheme . '://' . $server_host . $server_port . '/purge/' . ltrim( $path, '/' ) . $query;
 			$purge_url = \esc_url_raw( $purge_url );
 
 			if ( empty( $purge_url ) ) {
