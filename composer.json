@@ -1,0 +1,46 @@
+{
+    "name": "0-day-analytics/pfc-object-cache",
+    "description": "Persistent WordPress object cache drop-in powered by PHPFastCache.",
+    "type": "wordpress-plugin",
+    "license": "GPL-2.0-or-later",
+    "authors": [
+        {
+            "name": "sdobreff",
+            "homepage": "https://0-day-analytics.com"
+        }
+    ],
+    "require": {
+        "php": ">=8.1",
+        "phpfastcache/phpfastcache": "^9.0"
+    },
+    "require-dev": {
+        "wp-coding-standards/wpcs": "^3.0",
+        "phpcompatibility/phpcompatibility-wp": "^2.1",
+        "squizlabs/php_codesniffer": "^3.7"
+    },
+    "config": {
+        "optimize-autoloader": true,
+        "sort-packages": true,
+        "allow-plugins": {
+            "dealerdirect/phpcodesniffer-composer-installer": true
+        }
+    },
+    "autoload": {
+        "classmap": [
+            "includes/",
+            "classes/"
+        ]
+    },
+    "scripts": {
+        "post-install-cmd": [
+            "@php -r \"echo 'Dependencies installed. Activate the plugin in WordPress to install the drop-in.\\n';\""
+        ],
+        "lint": "phpcs --standard=WordPress pfc-object-cache.php includes/ drop-in/ templates/",
+        "lint-fix": "phpcbf --standard=WordPress pfc-object-cache.php includes/ drop-in/ templates/"
+    },
+    "extra": {
+        "wordpress-plugin": {
+            "slug": "pfc-object-cache"
+        }
+    }
+}

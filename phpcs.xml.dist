@@ -1,0 +1,31 @@
+<?xml version="1.0"?>
+<ruleset name="PFC Object Cache">
+    <description>WPCS ruleset for PFC Object Cache plugin.</description>
+
+    <!-- Scan these paths -->
+    <file>pfc-object-cache.php</file>
+    <file>includes/</file>
+    <file>drop-in/</file>
+    <file>templates/</file>
+
+    <!-- Exclude Composer vendor directory -->
+    <exclude-pattern>vendor/*</exclude-pattern>
+
+    <!-- Use WordPress Coding Standards -->
+    <rule ref="WordPress">
+        <!-- WP_Object_Cache must remain unprefixed (WP core requirement) -->
+        <exclude name="WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedClassFound"/>
+    </rule>
+
+    <!-- Minimum supported PHP version -->
+    <config name="minimum_supported_wp_version" value="6.4"/>
+    <config name="testVersion" value="8.1-"/>
+
+    <rule ref="WordPress.WP.I18n">
+        <properties>
+            <property name="text_domain" type="array">
+                <element value="pfc-object-cache"/>
+            </property>
+        </properties>
+    </rule>
+</ruleset>

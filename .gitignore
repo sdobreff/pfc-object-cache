@@ -1,0 +1,19 @@
+# Composer
+/vendor/
+composer.lock
+
+# OS
+.DS_Store
+Thumbs.db
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# PHPUnit
+/tests/coverage/
+
+# WordPress drop-in destination (managed by plugin activation)
+# Do not commit the live wp-content/object-cache.php
