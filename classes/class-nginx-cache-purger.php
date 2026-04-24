@@ -247,7 +247,7 @@ if ( ! class_exists( NginxCachePurger::class ) ) {
 				return false;
 			}
 
-			$parsed = wp_parse_url( $public_url );
+			$parsed = \wp_parse_url( $public_url );
 			if ( empty( $parsed['host'] ) ) {
 				return false;
 			}
@@ -258,7 +258,7 @@ if ( ! class_exists( NginxCachePurger::class ) ) {
 			$query           = ! empty( $parsed['query'] ) ? '?' . $parsed['query'] : '';
 
 			// Extract host + port from the configured server URL.
-			$server_parsed = wp_parse_url( self::$purge_server_url );
+			$server_parsed = \wp_parse_url( self::$purge_server_url );
 			$server_host   = $server_parsed['host'] ?? '127.0.0.1';
 			$server_port   = isset( $server_parsed['port'] ) ? ':' . $server_parsed['port'] : '';
 
@@ -413,6 +413,8 @@ if ( ! class_exists( NginxCachePurger::class ) ) {
 		 * Recursively delete the *contents* of a directory (not the dir itself).
 		 *
 		 * @param  string $dir Absolute directory path.
+		 * @param  int    $depth Current recursion depth.
+		 *
 		 * @return bool
 		 */
 		private static function recursive_delete_contents( string $dir, int $depth = 0 ): bool {

@@ -76,7 +76,7 @@ if ( ! class_exists( AdminPage::class ) ) {
 		 * @return void
 		 */
 		public static function add_menu(): void {
-			self::$page_hook = add_menu_page(
+			self::$page_hook = \add_menu_page(
 				\esc_html__( 'Object Cache', 'pfc-object-cache' ),
 				\esc_html__( 'Object Cache', 'pfc-object-cache' ),
 				'manage_options',
@@ -123,7 +123,7 @@ if ( ! class_exists( AdminPage::class ) ) {
 			}
 
 			// phpcs:disable WordPress.Security.NonceVerification.Missing -- verified below per action.
-			$action = sanitize_key( $_POST['pfc_action'] ?? '' );
+			$action = \sanitize_key( $_POST['pfc_action'] ?? '' );
 			// phpcs:enable
 
 			if ( empty( $action ) ) {
@@ -143,7 +143,7 @@ if ( ! class_exists( AdminPage::class ) ) {
 				case 'flush_group':
 					\check_admin_referer( self::NONCE_FLUSH );
 					// phpcs:ignore WordPress.Security.NonceVerification.Missing -- verified above.
-					$group  = sanitize_key( $_POST['pfc_group'] ?? 'default' );
+					$group  = \sanitize_key( $_POST['pfc_group'] ?? 'default' );
 					$result = CacheManager::flush_group( $group );
 					self::redirect_with_notice(
 						$result['success'] ? 'flushed' : 'flush_failed',

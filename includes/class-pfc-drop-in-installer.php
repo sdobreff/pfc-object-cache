@@ -34,7 +34,7 @@ if ( ! class_exists( DropInInstaller::class ) ) {
 				require_once ABSPATH . 'wp-admin/includes/file.php';
 			}
 
-			WP_Filesystem();
+			\WP_Filesystem();
 			global $wp_filesystem;
 
 			if ( ! $wp_filesystem ) {
@@ -51,7 +51,7 @@ if ( ! class_exists( DropInInstaller::class ) ) {
 						static function (): void {
 							printf(
 								'<div class="notice notice-warning"><p>%s</p></div>',
-								esc_html__( 'PFC Object Cache: An existing object-cache.php drop-in was found and left untouched. Deactivate the conflicting plugin first.', 'pfc-object-cache' )
+								\esc_html__( 'PFC Object Cache: An existing object-cache.php drop-in was found and left untouched. Deactivate the conflicting plugin first.', 'pfc-object-cache' )
 							);
 						}
 					);
@@ -81,7 +81,7 @@ if ( ! class_exists( DropInInstaller::class ) ) {
 				require_once ABSPATH . 'wp-admin/includes/file.php';
 			}
 
-			WP_Filesystem();
+			\WP_Filesystem();
 			global $wp_filesystem;
 
 			if ( $wp_filesystem && $wp_filesystem->exists( PFC_DROP_IN_DEST ) ) {
