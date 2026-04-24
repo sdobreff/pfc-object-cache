@@ -253,6 +253,28 @@ defined( 'ABSPATH' ) || exit;
 					<p class="pfc-form-description">
 						<?php esc_html_e( 'Absolute path to the nginx fastcgi_cache_path or proxy_cache_path directory.', 'pfc-object-cache' ); ?>
 					</p>
+
+					<label class="pfc-label" style="margin-top:1em;"><?php esc_html_e( 'Purge Server URL', 'pfc-object-cache' ); ?></label>
+					<input type="url" name="pfc_settings[nginx_purge_server_url]" class="regular-text pfc-input"
+						value="<?php echo esc_attr( $settings['nginx_purge_server_url'] ?? '' ); ?>"
+						placeholder="http://127.0.0.1:80" />
+					<p class="pfc-form-description">
+						<?php esc_html_e( 'Base URL of the nginx server that accepts PURGE requests (e.g. http://127.0.0.1:80). Used for per-URL purging.', 'pfc-object-cache' ); ?>
+					</p>
+
+					<label class="pfc-label" style="display:flex;align-items:center;gap:6px;margin-top:1em;">
+						<input type="hidden" name="pfc_settings[nginx_auto_purge]" value="" />
+						<input
+							type="checkbox"
+							name="pfc_settings[nginx_auto_purge]"
+							value="1"
+							<?php checked( ! empty( $settings['nginx_auto_purge'] ) ); ?>
+						/>
+						<?php esc_html_e( 'Auto-purge nginx cache when content is updated or deleted', 'pfc-object-cache' ); ?>
+					</label>
+					<p class="pfc-form-description">
+						<?php esc_html_e( 'Automatically sends PURGE requests to the server URL above when posts, comments, or terms change. Requires a purge server URL.', 'pfc-object-cache' ); ?>
+					</p>
 				</div>
 
 				<button type="submit" class="button button-primary pfc-btn pfc-btn--primary">

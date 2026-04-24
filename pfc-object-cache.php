@@ -48,6 +48,7 @@ require_once $pfc_autoloader;
 
 use PFC\ObjectCache\DropInInstaller;
 use PFC\ObjectCache\AdminPage;
+use PFC\ObjectCache\NginxCachePurger;
 
 // ── Activation / Deactivation ─────────────────────────────────────────────────
 
@@ -69,6 +70,11 @@ use PFC\ObjectCache\AdminPage;
 		if ( \is_admin() ) {
 			AdminPage::register();
 		}
+
+		// Bootstrap nginx auto-purge hooks (runs on both admin and front-end).
+		$settings = (array) \get_option( AdminPage::OPTION_KEY, array() );
+		NginxCachePurger::init( $settings );
+		NginxCachePurger::register_hooks();
 	},
 	10
 );

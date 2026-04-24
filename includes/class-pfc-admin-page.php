@@ -183,16 +183,18 @@ if ( ! class_exists( AdminPage::class ) ) {
 			// phpcs:enable
 
 			$sanitized = array(
-				'driver'              => \sanitize_key( $raw['driver'] ?? 'Files' ),
-				'redis_host'          => \sanitize_text_field( $raw['redis_host'] ?? '127.0.0.1' ),
-				'redis_port'          => \absint( $raw['redis_port'] ?? 6379 ),
-				'redis_password'      => \sanitize_text_field( $raw['redis_password'] ?? '' ),
-				'redis_database'      => \absint( $raw['redis_database'] ?? 0 ),
-				'redis_timeout'       => \absint( $raw['redis_timeout'] ?? 5 ),
-				'memcached_host'      => \sanitize_text_field( $raw['memcached_host'] ?? '127.0.0.1' ),
-				'memcached_port'      => \absint( $raw['memcached_port'] ?? 11211 ),
-				'nginx_purge_enabled' => ! empty( $raw['nginx_purge_enabled'] ),
-				'nginx_cache_path'    => \sanitize_text_field( $raw['nginx_cache_path'] ?? '' ),
+				'driver'                 => \sanitize_key( $raw['driver'] ?? 'Files' ),
+				'redis_host'             => \sanitize_text_field( $raw['redis_host'] ?? '127.0.0.1' ),
+				'redis_port'             => \absint( $raw['redis_port'] ?? 6379 ),
+				'redis_password'         => \sanitize_text_field( $raw['redis_password'] ?? '' ),
+				'redis_database'         => \absint( $raw['redis_database'] ?? 0 ),
+				'redis_timeout'          => \absint( $raw['redis_timeout'] ?? 5 ),
+				'memcached_host'         => \sanitize_text_field( $raw['memcached_host'] ?? '127.0.0.1' ),
+				'memcached_port'         => \absint( $raw['memcached_port'] ?? 11211 ),
+				'nginx_purge_enabled'    => ! empty( $raw['nginx_purge_enabled'] ),
+				'nginx_cache_path'       => \sanitize_text_field( $raw['nginx_cache_path'] ?? '' ),
+				'nginx_purge_server_url' => \esc_url_raw( $raw['nginx_purge_server_url'] ?? '' ),
+				'nginx_auto_purge'       => ! empty( $raw['nginx_auto_purge'] ),
 			);
 
 			\update_option( self::OPTION_KEY, $sanitized, false );
