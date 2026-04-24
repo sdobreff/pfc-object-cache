@@ -234,8 +234,9 @@ if ( ! class_exists( NginxCachePurger::class ) ) {
 		/**
 		 * Send a PURGE request for a public URL via the configured purge server.
 		 *
-		 * Replaces the scheme + host of the URL with the purge server URL
-		 * and sends the original Host in the request header.
+		 * Uses the nginx fastcgi_cache_purge /purge/ location prefix pattern:
+		 * a GET request to http://server/purge/original-path with the original
+		 * Host header, so the cache key matches the one used by nginx.
 		 *
 		 * @param  string $public_url The original public URL to purge.
 		 * @return bool
@@ -254,18 +255,17 @@ if ( ! class_exists( NginxCachePurger::class ) ) {
 			$path          = $parsed['path'] ?? '/';
 			$query         = ! empty( $parsed['query'] ) ? '?' . $parsed['query'] : '';
 
-			// Build the purge request URL using the server URL + original path.
-			$purge_url = \trailingslashit( rtrim( self::$purge_server_url, '/' ) ) . ltrim( $path, '/' ) . $query;
+			// Build: server_url/purge/original-path (nginx fastcgi_cache_purge location pattern).
+			$purge_url = rtrim( self::$purge_server_url, '/' ) . '/purge/' . ltrim( $path, '/' ) . $query;
 			$purge_url = \esc_url_raw( $purge_url );
 
 			if ( empty( $purge_url ) ) {
 				return false;
 			}
 
-			$response = \wp_remote_request(
+			$response = \wp_remote_get(
 				$purge_url,
 				array(
-					'method'    => 'PURGE',
 					'timeout'   => 5,
 					'sslverify' => false,
 					'headers'   => array(
