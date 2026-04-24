@@ -2,7 +2,7 @@
 /**
  * Admin page template for PFC Object Cache.
  *
- * Variables provided by PFC_Admin_Page::render_page():
+ * Variables provided by AdminPage::render_page():
  *
  * @var array  $stats    Cache statistics.
  * @var array  $settings Saved plugin settings.
@@ -12,6 +12,10 @@
  *
  * @package PFC_Object_Cache
  */
+
+declare(strict_types=1);
+
+use PFC\ObjectCache\AdminPage;
 
 defined( 'ABSPATH' ) || exit;
 ?>
@@ -101,7 +105,7 @@ defined( 'ABSPATH' ) || exit;
 
 			<!-- Flush All -->
 			<form method="post" action="" class="pfc-form pfc-form--flush">
-				<?php wp_nonce_field( PFC_Admin_Page::NONCE_FLUSH ); ?>
+				<?php wp_nonce_field( AdminPage::NONCE_FLUSH ); ?>
 				<input type="hidden" name="pfc_action" value="flush_all" />
 				<div class="pfc-form-row">
 					<p class="pfc-form-description">
@@ -122,7 +126,7 @@ defined( 'ABSPATH' ) || exit;
 
 			<!-- Flush Group -->
 			<form method="post" action="" class="pfc-form pfc-form--flush-group">
-				<?php wp_nonce_field( PFC_Admin_Page::NONCE_FLUSH ); ?>
+				<?php wp_nonce_field( AdminPage::NONCE_FLUSH ); ?>
 				<input type="hidden" name="pfc_action" value="flush_group" />
 				<div class="pfc-form-row">
 					<label for="pfc-group-input" class="pfc-label">
@@ -146,6 +150,27 @@ defined( 'ABSPATH' ) || exit;
 					<?php esc_html_e( 'Common group names: posts, post_meta, options, terms, users, default, transient, site-transient', 'pfc-object-cache' ); ?>
 				</p>
 			</form>
+
+			<hr class="pfc-divider" />
+
+			<!-- Purge Nginx Cache -->
+			<form method="post" action="" class="pfc-form pfc-form--flush">
+				<?php wp_nonce_field( AdminPage::NONCE_FLUSH ); ?>
+				<input type="hidden" name="pfc_action" value="purge_nginx" />
+				<div class="pfc-form-row">
+					<p class="pfc-form-description">
+						<?php esc_html_e( 'Purge the nginx FastCGI / proxy cache directory. Requires a valid cache path in driver settings.', 'pfc-object-cache' ); ?>
+					</p>
+					<button
+						type="submit"
+						class="button pfc-btn pfc-btn--secondary"
+						onclick="return confirm( '<?php echo esc_js( __( 'Purge the nginx cache directory?', 'pfc-object-cache' ) ); ?>' )"
+					>
+						<span class="dashicons dashicons-update"></span>
+						<?php esc_html_e( 'Purge Nginx Cache', 'pfc-object-cache' ); ?>
+					</button>
+				</div>
+			</form>
 		</div><!-- /.pfc-panel (left) -->
 
 		<!-- Right: Driver Settings -->
@@ -156,7 +181,7 @@ defined( 'ABSPATH' ) || exit;
 			</h2>
 
 			<form method="post" action="" class="pfc-form pfc-form--settings">
-				<?php wp_nonce_field( PFC_Admin_Page::NONCE_SETTINGS ); ?>
+				<?php wp_nonce_field( AdminPage::NONCE_SETTINGS ); ?>
 				<input type="hidden" name="pfc_action" value="save_settings" />
 
 				<!-- Driver selector -->
@@ -206,6 +231,28 @@ defined( 'ABSPATH' ) || exit;
 					<label class="pfc-label"><?php esc_html_e( 'Port', 'pfc-object-cache' ); ?></label>
 					<input type="number" name="pfc_settings[memcached_port]" class="small-text pfc-input"
 						value="<?php echo esc_attr( $settings['memcached_port'] ?? '11211' ); ?>" min="1" max="65535" />
+				</div>
+
+				<!-- Nginx cache purge settings -->
+				<div class="pfc-form-group" style="margin-top:1.5em;">
+					<h3 class="pfc-fields-heading"><?php esc_html_e( 'Nginx Cache Purge', 'pfc-object-cache' ); ?></h3>
+					<label class="pfc-label" style="display:flex;align-items:center;gap:6px;">
+						<input type="hidden" name="pfc_settings[nginx_purge_enabled]" value="" />
+						<input
+							type="checkbox"
+							name="pfc_settings[nginx_purge_enabled]"
+							value="1"
+							<?php checked( ! empty( $settings['nginx_purge_enabled'] ) ); ?>
+						/>
+						<?php esc_html_e( 'Enable automatic nginx cache purge on full flush', 'pfc-object-cache' ); ?>
+					</label>
+					<label class="pfc-label" style="margin-top:.5em;"><?php esc_html_e( 'Nginx Cache Path', 'pfc-object-cache' ); ?></label>
+					<input type="text" name="pfc_settings[nginx_cache_path]" class="regular-text pfc-input"
+						value="<?php echo esc_attr( $settings['nginx_cache_path'] ?? '' ); ?>"
+						placeholder="/var/run/nginx-cache" />
+					<p class="pfc-form-description">
+						<?php esc_html_e( 'Absolute path to the nginx fastcgi_cache_path or proxy_cache_path directory.', 'pfc-object-cache' ); ?>
+					</p>
 				</div>
 
 				<button type="submit" class="button button-primary pfc-btn pfc-btn--primary">

@@ -27,7 +27,8 @@
     },
     "autoload": {
         "classmap": [
-            "includes/"
+            "includes/",
+            "classes/"
         ]
     },
     "scripts": {
