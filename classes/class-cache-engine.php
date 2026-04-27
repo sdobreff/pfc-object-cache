@@ -16,6 +16,7 @@ defined( 'ABSPATH' ) || exit;
 
 use Phpfastcache\CacheManager;
 use Phpfastcache\Config\ConfigurationOption;
+use Phpfastcache\Drivers\Files\Config as FilesConfig;
 use Phpfastcache\Exceptions\PhpfastcacheDriverException;
 
 if ( ! class_exists( CacheEngine::class ) ) {
@@ -151,13 +152,12 @@ if ( ! class_exists( CacheEngine::class ) ) {
 			$config_array = self::build_driver_config( $driver, $options );
 
 			try {
-				CacheManager::setDefaultConfig( new ConfigurationOption( $config_array ) );
-				return CacheManager::getInstance( $driver );
+				$config = in_array( $driver, array( 'Files', 'Sqlite3' ), true )
+					? new FilesConfig( $config_array )
+					: new ConfigurationOption( $config_array );
+				return CacheManager::getInstance( $driver, $config );
 			} catch ( PhpfastcacheDriverException $e ) {
-				CacheManager::setDefaultConfig(
-					new ConfigurationOption( array( 'path' => self::get_cache_path() ) )
-				);
-				return CacheManager::getInstance( 'Files' );
+				return CacheManager::getInstance( 'Files', new FilesConfig( array( 'path' => self::get_cache_path() ) ) );
 			}
 		}
 
