@@ -1,0 +1,34 @@
+--- a/lib/Phpfastcache/Core/Pool/DriverBaseTrait.php	2026-04-27 09:32:19.189785880 +0000
++++ b/lib/Phpfastcache/Core/Pool/DriverBaseTrait.php	2026-04-27 09:32:28.838785555 +0000
+@@ -308,17 +308,23 @@
+         if ($decoded === null || is_array($decoded)) {
+             return $decoded;
+         }
+-        throw new PhpfastcacheCorruptedDataException(
+-            sprintf(
+-                'Failed to unserialize data from the cache, expected array or null but got "%s". Stored data may be corrupted.',
+-                gettype($decoded)
+-            ),
+-            $value
+-        );
++
++        // Treat corrupted/truncated data as a cache miss instead of a fatal error.
++        return null;
+     }
+ 
+     protected function unserialize(?string $value): mixed
+     {
+-        return $value ? \unserialize($value, ['allowed_classes' => true]) : null;
++        if (!$value) {
++            return null;
++        }
++
++        try {
++            $result = @\unserialize($value, ['allowed_classes' => true]);
++        } catch (\Throwable) {
++            return null;
++        }
++
++        return $result;
+     }
+ }

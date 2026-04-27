@@ -195,7 +195,10 @@ if ( ! class_exists( CacheEngine::class ) ) {
 
 				case 'Files':
 				default:
-					$base = array( 'path' => self::get_cache_path() );
+					$base = array(
+						'path'                   => self::get_cache_path(),
+						'secureFileManipulation' => true,
+					);
 					break;
 			}
 
